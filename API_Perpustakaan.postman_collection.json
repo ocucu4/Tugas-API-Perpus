@@ -1,0 +1,344 @@
+{
+  "info": {
+    "name": "API Perpustakaan - Integrasi Sistem Pertemuan 6",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. GET Daftar Buku",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Respons memuat daftar data\", function () { pm.expect(pm.response.json().data).to.be.an(\"array\"); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/buku",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "buku"
+          ]
+        }
+      }
+    },
+    {
+      "name": "2. GET Daftar Buku (filter penulis)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code 200\", function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/buku?penulis=andi",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "buku"
+          ],
+          "query": [
+            {
+              "key": "penulis",
+              "value": "andi"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "3. GET Detail Buku (B001)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code 200\", function () { pm.response.to.have.status(200); });",
+              "pm.test(\"Kode buku sesuai\", function () { pm.expect(pm.response.json().kode).to.eql(\"B001\"); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/buku/B001",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "buku",
+            "B001"
+          ]
+        }
+      }
+    },
+    {
+      "name": "4. GET Detail Buku tidak ada (B999)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code 404\", function () { pm.response.to.have.status(404); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/buku/B999",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "buku",
+            "B999"
+          ]
+        }
+      }
+    },
+    {
+      "name": "5. POST Tambah Buku (B004)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code 201\", function () { pm.response.to.have.status(201); });",
+              "pm.test(\"Header Location tersedia\", function () { pm.response.to.have.header(\"Location\"); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/buku",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "buku"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"kode\": \"B004\",\n  \"judul\": \"Integrasi Sistem\",\n  \"penulis\": \"Dewi Lestari\",\n  \"tahun\": 2022,\n  \"stok\": 2\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "6. POST Tambah Buku tidak valid (tanpa judul)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code 400\", function () { pm.response.to.have.status(400); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/buku",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "buku"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"kode\": \"B005\",\n  \"penulis\": \"Rina\",\n  \"tahun\": 2022,\n  \"stok\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "7. POST Tambah Buku duplikat (B001)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code 409\", function () { pm.response.to.have.status(409); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/buku",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "buku"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"kode\": \"B001\",\n  \"judul\": \"Judul Lain\",\n  \"penulis\": \"Penulis Lain\",\n  \"tahun\": 2020,\n  \"stok\": 1\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "8. PUT Ubah Buku (B001)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code 200\", function () { pm.response.to.have.status(200); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/buku/B001",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "buku",
+            "B001"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"judul\": \"Pemrograman Web Dasar (Edisi 2)\",\n  \"penulis\": \"Andi Pratama\",\n  \"tahun\": 2023,\n  \"stok\": 7\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "9. DELETE Hapus Buku (B004)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code 204\", function () { pm.response.to.have.status(204); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/api/v1/buku/B004",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "api",
+            "v1",
+            "buku",
+            "B004"
+          ]
+        }
+      }
+    }
+  ]
+}
